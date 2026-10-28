@@ -1,3 +1,4 @@
+[![ci](https://github.com/Miflal501/Credit-Risk-MLOps/actions/workflows/ci.yml/badge.svg)](https://github.com/Miflal501/Credit-Risk-MLOps/actions/workflows/ci.yml)
 # Credit Risk MLOps Pipeline
 
 End-to-end ML engineering project: tabular model training with experiment tracking and a
