@@ -1,0 +1,4 @@
+# Installed inside the SageMaker training/inference containers (script mode).
+xgboost
+shap
+matplotlib

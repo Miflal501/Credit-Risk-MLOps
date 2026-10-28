@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Unit tests
+        run: pytest -q
+
+      - name: Train (synthetic data, smoke test)
+        run: python src/train.py --synthetic --n-iter 3 --cv 3
+
+      - name: Build image
+        run: docker build -t credit-risk-api .
+
+      - name: Smoke-test the container
+        run: |
+          docker run -d -p 8000:8000 --name api credit-risk-api
+          for i in $(seq 1 15); do curl -sf http://localhost:8000/health && break || sleep 2; done
+          curl -sf http://localhost:8000/health
